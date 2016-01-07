@@ -8,5 +8,7 @@ module.exports = {
     URL_USER_BASIC: URL_BASE + '/user_basic',
     URL_USER: URL_BASE + '/user',
     URL_EVENTS: URL_BASE + '/events',
-    URL_MORE_EVENTS: URL_BASE + '/more_events'
+    URL_MORE_EVENTS: URL_BASE + '/more_events',
+    URL_LESSONS: URL_BASE + '/lessons',
+    URL_LESSON: URL_BASE + '/lesson/'
 };

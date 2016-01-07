@@ -16,6 +16,7 @@ var DRAWER_WIDTH_LEFT = 64;
 
 var DrawerMenu = require('./DrawerMenu');
 var EventsList = require('./EventsList');
+var LessonsList = require('./LessonsList');
 
 var MainScreen = React.createClass({
     getInitialState: function () {
@@ -88,6 +89,7 @@ var MainScreen = React.createClass({
                 content = <EventsList navigator={this.props.navigator}/>;
                 break;
             case '课程':
+                content = <LessonsList navigator={this.props.navigator}/>;
                 break;
             case '作业':
                 break;
@@ -104,9 +106,7 @@ var MainScreen = React.createClass({
                 renderNavigationView={this.renderNavigationView}>
                 {toolbar}
                 <View style={styles.container}>
-                    <View style={{flex: 1}}>
-                        {content}
-                    </View>
+                    {content}
                 </View>
             </DrawerLayoutAndroid>
         );
