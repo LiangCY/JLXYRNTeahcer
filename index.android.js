@@ -14,6 +14,7 @@ var TimerMixin = require('react-timer-mixin');
 var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
+var EventScreen = require('./EventScreen');
 
 var _navigator;
 BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -49,6 +50,10 @@ var RNAppTeacher = React.createClass({
         } else if (route.name === 'user') {
             return (
                 <UserScreen/>
+            );
+        } else if (route.name === 'event') {
+            return (
+                <EventScreen event={route.event} navigator={navigationOperations}/>
             );
         }
     },
