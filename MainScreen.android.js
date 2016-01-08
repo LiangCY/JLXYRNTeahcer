@@ -51,39 +51,16 @@ var MainScreen = React.createClass({
             {name: 'login'}
         ]);
     },
-    onActionSelected: function (position) {
-        if (position === 0) {
-            this.props.navigator.push({
-                name: 'edit_message'
-            });
-        }
-    },
     render: function () {
         var content;
-        if (this.state.menu == '私信') {
-            var toolbarActions = [
-                {title: '添加', icon: require('image!ic_write_white'), show: 'always'}
-            ];
-            var toolbar = (
-                <ToolbarAndroid
-                    navIcon={require('image!ic_menu_white')}
-                    title={this.state.menu}
-                    titleColor="white"
-                    style={styles.toolbar}
-                    onIconClicked={() => this.refs[DRAWER_REF].openDrawer()}
-                    actions={toolbarActions}
-                    onActionSelected={this.onActionSelected}/>
-            );
-        } else {
-            toolbar = (
-                <ToolbarAndroid
-                    navIcon={require('image!ic_menu_white')}
-                    title={this.state.menu}
-                    titleColor="white"
-                    style={styles.toolbar}
-                    onIconClicked={() => this.refs[DRAWER_REF].openDrawer()}/>
-            );
-        }
+        var toolbar = (
+            <ToolbarAndroid
+                navIcon={require('image!ic_menu_white')}
+                title={this.state.menu}
+                titleColor="white"
+                style={styles.toolbar}
+                onIconClicked={() => this.refs[DRAWER_REF].openDrawer()}/>
+        );
         switch (this.state.menu) {
             case '微博':
                 content = <EventsList navigator={this.props.navigator}/>;

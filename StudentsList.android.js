@@ -45,6 +45,12 @@ var LessonsList = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    sendMessage: function (student) {
+        this.props.navigator.push({
+            name: 'edit_message',
+            student: student
+        });
+    },
     renderRow: function (student) {
         return (
 
@@ -63,7 +69,7 @@ var LessonsList = React.createClass({
                     </Text>
                 </View>
                 <TouchableNativeFeedback
-                    onPress={()=>this.selectEvent(event)}
+                    onPress={()=>this.sendMessage(student)}
                     background={TouchableNativeFeedback.SelectableBackground()}>
                     <View style={styles.button}>
                         <Text style={styles.buttonText}>{'私信'}</Text>
