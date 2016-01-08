@@ -19,6 +19,8 @@ var StudentsList = require('./StudentsList');
 var ResourcesList = require('./ResourcesList');
 var ResourceScreen = require('./ResourceScreen');
 var TaskScreen = require('./TaskScreen');
+var HomeworkList = require('./HomeworkList');
+var HomeworkScreen = require('./HomeworkScreen');
 var MessageScreen = require('./MessageScreen');
 var MessageEditor = require('./MessageEditor');
 
@@ -76,6 +78,14 @@ var RNAppTeacher = React.createClass({
         } else if (route.name === 'task') {
             return (
                 <TaskScreen taskId={route.taskId} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'homework_list') {
+            return (
+                <HomeworkList task={route.task} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'homework') {
+            return (
+                <HomeworkScreen homeworkId={route.homeworkId} navigator={navigationOperations}/>
             );
         } else if (route.name === 'message') {
             return (

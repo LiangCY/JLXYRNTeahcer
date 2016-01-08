@@ -63,7 +63,10 @@ var TasksList = React.createClass({
         });
     },
     viewHomeworkList: function (task) {
-
+        this.props.navigator.push({
+            name: 'homework_list',
+            task: task
+        });
     },
     renderRow: function (task) {
         return (
