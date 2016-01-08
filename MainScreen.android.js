@@ -17,6 +17,7 @@ var DRAWER_WIDTH_LEFT = 64;
 var DrawerMenu = require('./DrawerMenu');
 var EventsList = require('./EventsList');
 var LessonsList = require('./LessonsList');
+var MessagesScreen = require('./MessagesScreen');
 
 var MainScreen = React.createClass({
     getInitialState: function () {
@@ -73,6 +74,7 @@ var MainScreen = React.createClass({
             case '资源':
                 break;
             case '私信':
+                content = <MessagesScreen navigator={this.props.navigator}/>;
                 break;
         }
         return (

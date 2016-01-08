@@ -141,6 +141,10 @@ var EventsList = React.createClass({
                 break;
             case 4:
             case 5:
+                this.props.navigator.push({
+                    name: 'message',
+                    messageId: event.messageId
+                });
                 break;
         }
     },
