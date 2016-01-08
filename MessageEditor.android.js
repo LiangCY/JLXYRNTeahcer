@@ -9,7 +9,6 @@ var {
     ScrollView,
     ToolbarAndroid,
     TextInput,
-    ListView,
     ToastAndroid,
     } = React;
 
@@ -17,7 +16,6 @@ var Constants = require('./Constants');
 
 var MessageEditor = React.createClass({
     getInitialState() {
-        var teachers = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
         return {
             title: '',
             content: '',
