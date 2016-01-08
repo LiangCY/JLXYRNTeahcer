@@ -16,6 +16,8 @@ var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
 var EventScreen = require('./EventScreen');
 var StudentsList = require('./StudentsList');
+var ResourcesList = require('./ResourcesList');
+var ResourceScreen = require('./ResourceScreen');
 
 var _navigator;
 BackAndroid.addEventListener('hardwareBackPress', () => {
@@ -58,7 +60,15 @@ var RNAppTeacher = React.createClass({
             );
         } else if (route.name === 'students') {
             return (
-                <StudentsList lessonId={route.lessonId} navigator={navigationOperations}/>
+                <StudentsList lesson={route.lesson} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'resources') {
+            return (
+                <ResourcesList lesson={route.lesson} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'resource') {
+            return (
+                <ResourceScreen resourceId={route.resourceId} navigator={navigationOperations}/>
             );
         }
     },

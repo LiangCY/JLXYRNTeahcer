@@ -29,7 +29,7 @@ var LessonsList = React.createClass({
     },
     fetchStudents: function () {
         var self = this;
-        fetch(Constants.URL_LESSON_STUDENTS + this.props.lessonId, {
+        fetch(Constants.URL_LESSON_STUDENTS + this.props.lesson._id, {
             credentials: 'same-origin'
         }).then(function (response) {
             return response.json()
@@ -77,7 +77,7 @@ var LessonsList = React.createClass({
             <View style={styles.container}>
                 <ToolbarAndroid
                     navIcon={require('image!ic_back_white')}
-                    title='学生列表'
+                    title={'学生列表 '+this.props.lesson.name}
                     titleColor="white"
                     style={styles.toolbar}
                     onIconClicked={() => this.props.navigator.pop()}/>

@@ -45,13 +45,13 @@ var EventsList = React.createClass({
     viewStudents: function (lesson) {
         this.props.navigator.push({
             name: 'students',
-            lessonId: lesson._id
+            lesson: lesson
         });
     },
     viewResources: function (lesson) {
         this.props.navigator.push({
             name: 'resources',
-            lessonId: lesson._id
+            lesson: lesson
         });
     },
     renderRow: function (lesson) {

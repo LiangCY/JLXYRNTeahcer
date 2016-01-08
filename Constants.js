@@ -12,5 +12,6 @@ module.exports = {
     URL_LESSONS: URL_BASE + '/lessons',
     URL_LESSON: URL_BASE + '/lesson/',
     URL_LESSON_STUDENTS: URL_BASE + '/lesson/students/',
-    URL_LESSON_RESOURCES: URL_BASE + '/lesson/resources/'
+    URL_LESSON_RESOURCES: URL_BASE + '/lesson/resources/',
+    URL_RESOURCE: URL_BASE + '/resource/'
 };
