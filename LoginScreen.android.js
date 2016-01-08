@@ -71,7 +71,6 @@ var LoginScreen = React.createClass({
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
-                console.log(json);
                 _navigator.replace({name: 'main', menu: '微博'});
                 AsyncStorage.setItem(KEY_USER, username + ':' + password)
             } else {
