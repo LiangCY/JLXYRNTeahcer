@@ -42,11 +42,17 @@ var EventsList = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
-    selectLesson: function (lesson) {
-        //this.props.navigator.push({
-        //    name: 'lesson',
-        //    lessonId: lesson.id
-        //});
+    viewStudents: function (lesson) {
+        this.props.navigator.push({
+            name: 'students',
+            lessonId: lesson._id
+        });
+    },
+    viewResources: function (lesson) {
+        this.props.navigator.push({
+            name: 'resources',
+            lessonId: lesson._id
+        });
     },
     renderRow: function (lesson) {
         var plans = lesson.plan.map(function (item) {
@@ -97,12 +103,14 @@ var EventsList = React.createClass({
                     {plans}
                 </View>
                 <View style={styles.actions}>
-                    <TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.viewStudents(lesson)}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>{'学生列表'}</Text>
                         </View>
                     </TouchableNativeFeedback>
-                    <TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.viewResources(lesson)}>
                         <View style={styles.button}>
                             <Text style={styles.buttonText}>{'课程资源'}</Text>
                         </View>
@@ -180,7 +188,7 @@ var styles = StyleSheet.create({
         marginLeft: 16,
         padding: 6,
         borderColor: '#388E3C',
-        borderWidth: 1,
+        borderWidth: 2,
         borderRadius: 4
     },
     buttonText: {
