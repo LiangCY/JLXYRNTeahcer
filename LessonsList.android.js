@@ -188,7 +188,7 @@ var styles = StyleSheet.create({
         marginLeft: 16,
         padding: 6,
         borderColor: '#388E3C',
-        borderWidth: 2,
+        borderWidth: 1,
         borderRadius: 4
     },
     buttonText: {
