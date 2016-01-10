@@ -178,7 +178,7 @@ var styles = StyleSheet.create({
         flex: 1,
         padding: 16,
         backgroundColor: 'white',
-        marginBottom: 16
+        marginBottom: 24
     },
     content: {
         paddingBottom: 12,
