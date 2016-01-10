@@ -24,8 +24,23 @@ var TasksList = React.createClass({
             dataSource: dataSource
         };
     },
+    componentWillMount: function () {
+        var navigator = this.props.navigator;
+        var self = this;
+        var didFocusCallback = function (event) {
+            if (event.data.route.name == 'main') {
+                self.fetchTasks();
+            }
+        };
+        this._listeners = [
+            navigator.navigationContext.addListener('didfocus', didFocusCallback)
+        ];
+    },
     componentDidMount: function () {
         this.fetchTasks();
+    },
+    componentWillUnmount: function () {
+        this._listeners && this._listeners.forEach(listener => listener.remove());
     },
     fetchTasks: function () {
         if (this.state.isRefreshing) {
