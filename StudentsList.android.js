@@ -45,6 +45,12 @@ var LessonsList = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    selectStudent: function (student) {
+        this.props.navigator.push({
+            name: 'student',
+            studentId: student._id
+        });
+    },
     sendMessage: function (student) {
         this.props.navigator.push({
             name: 'edit_message',
@@ -53,29 +59,32 @@ var LessonsList = React.createClass({
     },
     renderRow: function (student) {
         return (
-
-            <View style={styles.row}>
-                <Image
-                    style={styles.avatar}
-                    source={{uri:Constants.URL_PREFIX_AVATAR+student._id}}/>
-                <View style={styles.column}>
-                    <Text
-                        style={styles.name}>
-                        {(student.name)}
-                    </Text>
-                    <Text
-                        style={styles.number}>
-                        {student._id}
-                    </Text>
-                </View>
-                <TouchableNativeFeedback
-                    onPress={()=>this.sendMessage(student)}
-                    background={TouchableNativeFeedback.SelectableBackground()}>
-                    <View style={styles.button}>
-                        <Text style={styles.buttonText}>{'私信'}</Text>
+            <TouchableNativeFeedback
+                onPress={()=>this.selectStudent(student)}
+                background={TouchableNativeFeedback.SelectableBackground()}>
+                <View style={styles.row}>
+                    <Image
+                        style={styles.avatar}
+                        source={{uri:Constants.URL_PREFIX_AVATAR+student._id}}/>
+                    <View style={styles.column}>
+                        <Text
+                            style={styles.name}>
+                            {(student.name)}
+                        </Text>
+                        <Text
+                            style={styles.number}>
+                            {student._id}
+                        </Text>
                     </View>
-                </TouchableNativeFeedback>
-            </View>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.sendMessage(student)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>{'私信'}</Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                </View>
+            </TouchableNativeFeedback>
         );
     },
     render() {

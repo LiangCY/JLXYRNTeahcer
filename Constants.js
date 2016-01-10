@@ -13,6 +13,7 @@ module.exports = {
     URL_LESSON: URL_BASE + '/lesson/',
     URL_LESSON_STUDENTS: URL_BASE + '/lesson/students/',
     URL_LESSON_RESOURCES: URL_BASE + '/lesson/resources/',
+    URL_STUDENT: URL_BASE + '/student/',
     URL_TASKS: URL_BASE + '/tasks',
     URL_TASK: URL_BASE + '/task/',
     URL_HOMEWORK_LIST: URL_BASE + '/homeworks/',

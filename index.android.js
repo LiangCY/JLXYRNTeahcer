@@ -16,6 +16,7 @@ var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
 var EventScreen = require('./EventScreen');
 var StudentsList = require('./StudentsList');
+var StudentScreen = require('./StudentScreen');
 var ResourcesList = require('./ResourcesList');
 var ResourceScreen = require('./ResourceScreen');
 var TaskScreen = require('./TaskScreen');
@@ -66,6 +67,10 @@ var RNAppTeacher = React.createClass({
         } else if (route.name === 'students') {
             return (
                 <StudentsList lesson={route.lesson} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'student') {
+            return (
+                <StudentScreen studentId={route.studentId} navigator={navigationOperations}/>
             );
         } else if (route.name === 'resources') {
             return (
