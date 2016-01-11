@@ -26,8 +26,23 @@ var HomeworkList = React.createClass({
             dataSource: dataSource
         };
     },
+    componentWillMount: function () {
+        var navigator = this.props.navigator;
+        var self = this;
+        var didFocusCallback = function (event) {
+            if (event.data.route.name == 'homework_list') {
+                self.fetchStudents();
+            }
+        };
+        this._listeners = [
+            navigator.navigationContext.addListener('didfocus', didFocusCallback)
+        ];
+    },
     componentDidMount: function () {
         this.fetchStudents();
+    },
+    componentWillUnmount: function () {
+        this._listeners && this._listeners.forEach(listener => listener.remove());
     },
     fetchStudents: function () {
         if (this.state.isRefresh) {
