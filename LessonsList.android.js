@@ -55,6 +55,9 @@ var EventsList = React.createClass({
         });
     },
     renderRow: function (lesson) {
+        lesson.plan.sort(function (a, b) {
+            return a.day - b.day;
+        });
         var plans = lesson.plan.map(function (item) {
             switch (item.day) {
                 case 1:
