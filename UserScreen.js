@@ -53,15 +53,46 @@ var UserScreen = React.createClass({
                     </Text>
                 </View>
                 <View style={styles.content}>
-                    <Text style={styles.item}>
-                        {'教师号：' + this.state.user._id}
-                    </Text>
-                    <Text style={styles.item}>
-                        {'院　系：' + this.state.user.school}
-                    </Text>
-                    <Text style={styles.item}>
-                        {'课　程：' + this.state.user.lessons.join('、')}
-                    </Text>
+                    <View style={styles.row}>
+                        <Text style={styles.rowTitle}>
+                            {'教师号'}
+                        </Text>
+                        <Text style={styles.rowContent}>
+                            {this.state.user._id}
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.rowTitle}>
+                            {'院系'}
+                        </Text>
+                        <Text style={styles.rowContent}>
+                            {this.state.user.school}
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.rowTitle}>
+                            {'民族'}
+                        </Text>
+                        <Text style={styles.rowContent}>
+                            {this.state.user.nation ? this.state.user.nation : ''}
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.rowTitle}>
+                            {'出生日期'}
+                        </Text>
+                        <Text style={styles.rowContent}>
+                            {this.state.user.birthDate ? this.state.user.birthDate : ''}
+                        </Text>
+                    </View>
+                    <View style={styles.row}>
+                        <Text style={styles.rowTitle}>
+                            {'课程'}
+                        </Text>
+                        <Text style={styles.rowContent}>
+                            {this.state.user.lessons.join('、')}
+                        </Text>
+                    </View>
                 </View>
             </View>
         );
@@ -71,7 +102,7 @@ var UserScreen = React.createClass({
 var styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'column',
+
         backgroundColor: '#FAFAFA'
     },
     header: {
@@ -99,9 +130,19 @@ var styles = StyleSheet.create({
         paddingTop: 24,
         paddingHorizontal: 16
     },
-    item: {
-        marginVertical: 8,
-        fontSize: 18
+    row: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        marginVertical: 8
+    },
+    rowTitle: {
+        width: 96,
+        fontSize: 17,
+        color: '#333'
+    },
+    rowContent: {
+        flex: 1,
+        fontSize: 17
     }
 });
 
