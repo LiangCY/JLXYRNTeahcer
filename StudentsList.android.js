@@ -15,7 +15,7 @@ var {
 
 var Constants = require('./Constants');
 
-var LessonsList = React.createClass({
+var StudentsList = React.createClass({
     getInitialState() {
         var dataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
@@ -153,4 +153,4 @@ var styles = StyleSheet.create({
     }
 });
 
-module.exports = LessonsList;
+module.exports = StudentsList;
