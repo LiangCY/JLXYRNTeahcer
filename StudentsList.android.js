@@ -58,6 +58,17 @@ var StudentsList = React.createClass({
         });
     },
     renderRow: function (student) {
+        var attendance = '';
+        if (student.absentCount > 0) {
+            attendance = '缺勤' + student.absentCount + '次';
+            if (student.leaveCount > 0) {
+                attendance += ' 请假' + student.leaveCount + '次';
+            }
+        } else if (student.leaveCount > 0) {
+            attendance = '请假' + student.leaveCount + '次';
+        } else {
+            attendance = '全勤';
+        }
         return (
             <TouchableNativeFeedback
                 onPress={()=>this.selectStudent(student)}
@@ -67,13 +78,19 @@ var StudentsList = React.createClass({
                         style={styles.avatar}
                         source={{uri:Constants.URL_PREFIX_AVATAR+student._id}}/>
                     <View style={styles.column}>
+                        <View style={styles.nameRow}>
+                            <Text
+                                style={styles.name}>
+                                {(student.name)}
+                            </Text>
+                            <Text
+                                style={styles.number}>
+                                {student._id}
+                            </Text>
+                        </View>
                         <Text
-                            style={styles.name}>
-                            {(student.name)}
-                        </Text>
-                        <Text
-                            style={styles.number}>
-                            {student._id}
+                            style={styles.attendance}>
+                            {attendance}
                         </Text>
                     </View>
                     <TouchableNativeFeedback
@@ -131,11 +148,19 @@ var styles = StyleSheet.create({
         flex: 1,
         flexDirection: 'column'
     },
+    nameRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
     name: {
         fontSize: 17,
         color: '#222'
     },
     number: {
+        fontSize: 15,
+        marginLeft: 4
+    },
+    attendance: {
         fontSize: 16,
         marginTop: 4
     },
