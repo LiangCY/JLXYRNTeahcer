@@ -1,4 +1,4 @@
-const URL_BASE = 'http://219.219.117.114:3030';
+const URL_BASE = 'http://192.168.56.1:3030';
 
 module.exports = {
     URL_PREFIX: 'http://219.219.117.114',
@@ -13,6 +13,7 @@ module.exports = {
     URL_LESSON: URL_BASE + '/lesson/',
     URL_LESSON_STUDENTS: URL_BASE + '/lesson/students/',
     URL_LESSON_RESOURCES: URL_BASE + '/lesson/resources/',
+    URL_ROLL_CALL: URL_BASE + '/roll_call/',
     URL_STUDENT: URL_BASE + '/student/',
     URL_TASKS: URL_BASE + '/tasks',
     URL_TASK: URL_BASE + '/task/',

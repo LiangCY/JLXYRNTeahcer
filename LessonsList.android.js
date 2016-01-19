@@ -42,6 +42,12 @@ var EventsList = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    rollCall: function (lesson) {
+        this.props.navigator.push({
+            name: 'roll_call',
+            lesson: lesson
+        });
+    },
     viewStudents: function (lesson) {
         this.props.navigator.push({
             name: 'students',
@@ -106,6 +112,12 @@ var EventsList = React.createClass({
                     {plans}
                 </View>
                 <View style={styles.actions}>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.rollCall(lesson)}>
+                        <View style={styles.button}>
+                            <Text style={styles.buttonText}>{'课堂点名'}</Text>
+                        </View>
+                    </TouchableNativeFeedback>
                     <TouchableNativeFeedback
                         onPress={()=>this.viewStudents(lesson)}>
                         <View style={styles.button}>

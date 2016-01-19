@@ -15,6 +15,7 @@ var LoginScreen = require('./LoginScreen');
 var MainScreen = require('./MainScreen');
 var UserScreen = require('./UserScreen');
 var EventScreen = require('./EventScreen');
+var RollCallScreen = require('./RollCallScreen');
 var StudentsList = require('./StudentsList');
 var StudentScreen = require('./StudentScreen');
 var ResourcesList = require('./ResourcesList');
@@ -63,6 +64,10 @@ var RNAppTeacher = React.createClass({
         } else if (route.name === 'event') {
             return (
                 <EventScreen event={route.event} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'roll_call') {
+            return (
+                <RollCallScreen lesson={route.lesson} navigator={navigationOperations}/>
             );
         } else if (route.name === 'students') {
             return (
