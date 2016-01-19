@@ -17,7 +17,7 @@ var {
 var Constants = require('./Constants');
 var MessagesList = require('./MessagesList');
 
-var TeacherScreen = React.createClass({
+var StudentScreen = React.createClass({
     getInitialState() {
         return {
             student: null
@@ -194,4 +194,4 @@ var styles = StyleSheet.create({
     }
 });
 
-module.exports = TeacherScreen;
+module.exports = StudentScreen;
