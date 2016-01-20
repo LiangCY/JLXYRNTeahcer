@@ -10,6 +10,7 @@ module.exports = {
     URL_EVENTS: URL_BASE + '/events',
     URL_MORE_EVENTS: URL_BASE + '/more_events',
     URL_ADD_EVENT: URL_BASE + '/add_event',
+    URL_DELETE_EVENT: URL_BASE + '/delete_event/',
     URL_LESSONS: URL_BASE + '/lessons',
     URL_LESSON: URL_BASE + '/lesson/',
     URL_LESSON_STUDENTS: URL_BASE + '/lesson/students/',
