@@ -31,8 +31,23 @@ var EventsList = React.createClass({
             hasMore: false
         };
     },
+    componentWillMount: function () {
+        var navigator = this.props.navigator;
+        var self = this;
+        var didFocusCallback = function (event) {
+            if (event.data.route.name == 'main') {
+                self.fetchEvents();
+            }
+        };
+        this._listeners = [
+            navigator.navigationContext.addListener('didfocus', didFocusCallback)
+        ];
+    },
     componentDidMount: function () {
         this.fetchEvents();
+    },
+    componentWillUnmount: function () {
+        this._listeners && this._listeners.forEach(listener => listener.remove());
     },
     fetchEvents: function () {
         if (this.state.isRefreshing) {
