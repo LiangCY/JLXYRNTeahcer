@@ -14,6 +14,8 @@ var {
     ToastAndroid,
     } = React;
 
+import ActionButton from 'react-native-action-button';
+
 var Constants = require('./Constants');
 
 var EventsList = React.createClass({
@@ -148,6 +150,11 @@ var EventsList = React.createClass({
                 break;
         }
     },
+    addEvent: function () {
+        this.props.navigator.push({
+            name: 'add_event'
+        });
+    },
     render() {
         return (
             <PullToRefreshViewAndroid
@@ -155,13 +162,19 @@ var EventsList = React.createClass({
                 refreshing={this.state.isRefreshing}
                 onRefresh={this.fetchEvents}
                 colors={['#4CAF50']}>
-                <ListView
-                    style={styles.list}
-                    dataSource={this.state.dataSource}
-                    renderRow={this.renderRow}
-                    renderFooter={this.renderFooter}
-                    onEndReached={this.fetchMoreEvents}
-                    onEndReachedThreshold={240}/>
+                <View style={{flex:1}}>
+                    <ListView
+                        style={styles.list}
+                        dataSource={this.state.dataSource}
+                        renderRow={this.renderRow}
+                        renderFooter={this.renderFooter}
+                        onEndReached={this.fetchMoreEvents}
+                        onEndReachedThreshold={240}/>
+                    <ActionButton
+                        onPress={this.addEvent}
+                        icon={<Image style={{height:24,width:24}} source={require('image!ic_write_white')}/>}
+                        buttonColor="rgba(76,175,80,1)"/>
+                </View>
             </PullToRefreshViewAndroid>
         );
     }

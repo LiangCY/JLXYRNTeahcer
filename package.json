@@ -6,7 +6,8 @@
     "start": "react-native start"
   },
   "dependencies": {
-    "react-native": "^0.18.0-rc",
+    "react-native": "^0.18.0",
+    "react-native-action-button": "^1.1.1",
     "react-native-htmlview": "^0.2.0",
     "react-native-scrollable-tab-view": "^0.3.4",
     "react-timer-mixin": "^0.13.3"
