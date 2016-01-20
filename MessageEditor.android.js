@@ -47,6 +47,9 @@ var MessageEditor = React.createClass({
             }).then(function (response) {
                 return response.json()
             }).then(function (json) {
+                self.setState({
+                    isAdding: false
+                });
                 if (json.error == 0) {
                     ToastAndroid.show('私信已发送', ToastAndroid.SHORT);
                     self.props.navigator.pop();
@@ -54,6 +57,9 @@ var MessageEditor = React.createClass({
                     ToastAndroid.show(json.message, ToastAndroid.SHORT);
                 }
             }).catch(function (e) {
+                self.setState({
+                    isAdding: false
+                });
                 ToastAndroid.show(e.message, ToastAndroid.SHORT);
             });
 
