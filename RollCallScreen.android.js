@@ -53,20 +53,25 @@ var RollCallScreen = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    selectAttend: function (student) {
+        var students = this.state.students.slice();
+        var index = students.map((student)=>student._id).indexOf(student._id);
+        students[index] = {
+            ...this.state.students[index],
+            status: 0
+        };
+        this.setState({
+            dataSource: this.state.dataSource.cloneWithRows(students),
+            students: students
+        });
+    },
     selectAbsent: function (student) {
         var students = this.state.students.slice();
         var index = students.map((student)=>student._id).indexOf(student._id);
-        if (students[index].status == 1) {
-            students[index] = {
-                ...this.state.students[index],
-                status: 0
-            };
-        } else {
-            students[index] = {
-                ...this.state.students[index],
-                status: 1
-            };
-        }
+        students[index] = {
+            ...this.state.students[index],
+            status: 1
+        };
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(students),
             students: students
@@ -75,17 +80,10 @@ var RollCallScreen = React.createClass({
     selectLeave: function (student) {
         var students = this.state.students.slice();
         var index = students.map((student)=>student._id).indexOf(student._id);
-        if (students[index].status == 2) {
-            students[index] = {
-                ...this.state.students[index],
-                status: 0
-            };
-        } else {
-            students[index] = {
-                ...this.state.students[index],
-                status: 2
-            };
-        }
+        students[index] = {
+            ...this.state.students[index],
+            status: 2
+        };
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows(students),
             students: students
@@ -135,10 +133,16 @@ var RollCallScreen = React.createClass({
         });
     },
     renderRow: function (student) {
+        var buttonStyleAttend = styles.buttonAttend;
+        var buttonTextStyleAttend = styles.buttonTextAttend;
         var buttonStyleAbsent = styles.buttonAbsent;
         var buttonTextStyleAbsent = styles.buttonTextAbsent;
         var buttonStyleLeave = styles.buttonLeave;
         var buttonTextStyleLeave = styles.buttonTextLeave;
+        if (student.status == 0) {
+            buttonStyleAttend = styles.buttonAttendActive;
+            buttonTextStyleAttend = styles.buttonTextAttendActive;
+        }
         if (student.status == 1) {
             buttonStyleAbsent = styles.buttonAbsentActive;
             buttonTextStyleAbsent = styles.buttonTextAbsentActive;
@@ -159,6 +163,13 @@ var RollCallScreen = React.createClass({
                         {student._id}
                     </Text>
                 </View>
+                <TouchableNativeFeedback
+                    onPress={()=>this.selectAttend(student)}
+                    background={TouchableNativeFeedback.SelectableBackground()}>
+                    <View style={buttonStyleAttend}>
+                        <Text style={buttonTextStyleAttend}>{'出勤'}</Text>
+                    </View>
+                </TouchableNativeFeedback>
                 <TouchableNativeFeedback
                     onPress={()=>this.selectAbsent(student)}
                     background={TouchableNativeFeedback.SelectableBackground()}>
@@ -239,24 +250,6 @@ var styles = StyleSheet.create({
         borderBottomColor: '#DDD',
         borderBottomWidth: 0.5
     },
-    rowAbsent: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: '#BCD8FD',
-        padding: 12,
-        borderBottomColor: '#DDD',
-        borderBottomWidth: 0.5
-    },
-    rowLeave: {
-        flex: 1,
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: 'white',
-        padding: 12,
-        borderBottomColor: '#DDD',
-        borderBottomWidth: 0.5
-    },
     column: {
         flex: 1,
         flexDirection: 'column'
@@ -269,25 +262,50 @@ var styles = StyleSheet.create({
         fontSize: 16,
         marginTop: 4
     },
-    buttonAbsent: {
-        marginRight: 8,
+    buttonAttend: {
+        marginRight: 6,
         paddingVertical: 8,
         paddingHorizontal: 12,
-        borderColor: 'orange',
-        borderWidth: 2,
+        borderColor: '#4CAF50',
+        borderWidth: 1,
+        borderRadius: 4
+    },
+    buttonTextAttend: {
+        fontSize: 16,
+        color: '#4CAF50'
+    },
+    buttonAttendActive: {
+        marginRight: 6,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        backgroundColor: '#4CAF50',
+        borderColor: '#4CAF50',
+        borderWidth: 1,
+        borderRadius: 4
+    },
+    buttonTextAttendActive: {
+        fontSize: 16,
+        color: 'white'
+    },
+    buttonAbsent: {
+        marginRight: 6,
+        paddingVertical: 8,
+        paddingHorizontal: 12,
+        borderColor: 'red',
+        borderWidth: 1,
         borderRadius: 4
     },
     buttonTextAbsent: {
         fontSize: 16,
-        color: 'orange'
+        color: 'red'
     },
     buttonAbsentActive: {
-        marginRight: 8,
+        marginRight: 6,
         paddingVertical: 8,
         paddingHorizontal: 12,
-        backgroundColor: 'orange',
-        borderColor: 'orange',
-        borderWidth: 2,
+        backgroundColor: 'red',
+        borderColor: 'red',
+        borderWidth: 1,
         borderRadius: 4
     },
     buttonTextAbsentActive: {
@@ -295,24 +313,24 @@ var styles = StyleSheet.create({
         color: 'white'
     },
     buttonLeave: {
-        marginRight: 8,
+        marginRight: 6,
         paddingVertical: 8,
         paddingHorizontal: 12,
-        borderColor: '#4089DC',
-        borderWidth: 2,
+        borderColor: 'orange',
+        borderWidth: 1,
         borderRadius: 4
     },
     buttonTextLeave: {
         fontSize: 16,
-        color: '#4089DC'
+        color: 'orange'
     },
     buttonLeaveActive: {
-        marginRight: 8,
+        marginRight: 6,
         paddingVertical: 8,
         paddingHorizontal: 12,
-        backgroundColor: '#4089DC',
-        borderColor: '#4089DC',
-        borderWidth: 2,
+        backgroundColor: 'orange',
+        borderColor: 'orange',
+        borderWidth: 1,
         borderRadius: 4
     },
     buttonTextLeaveActive: {
