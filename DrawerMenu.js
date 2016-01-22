@@ -38,8 +38,8 @@ var DrawerMenu = React.createClass({
     componentWillReceiveProps: function (nextProps) {
         this.setState({
             dataSource: this.state.dataSource.cloneWithRows([
-                {title: '微博', icon: require('image!ic_event'), selected: nextProps.selected == '微博'},
                 {title: '课程', icon: require('image!ic_lesson'), selected: nextProps.selected == '课程'},
+                {title: '微博', icon: require('image!ic_event'), selected: nextProps.selected == '微博'},
                 {title: '作业', icon: require('image!ic_homework'), selected: nextProps.selected == '作业'},
                 {title: '私信', icon: require('image!ic_message'), selected: nextProps.selected == '私信'}
             ])

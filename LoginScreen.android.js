@@ -71,7 +71,7 @@ var LoginScreen = React.createClass({
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
-                _navigator.replace({name: 'main', menu: '微博'});
+                _navigator.replace({name: 'main', menu: '课程'});
                 AsyncStorage.setItem(KEY_USER, username + ':' + password)
             } else {
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
@@ -87,7 +87,7 @@ var LoginScreen = React.createClass({
                     style={styles.toolbar}
                     title="登录"
                     titleColor="white"/>
-                <Text style={styles.label}>学号</Text>
+                <Text style={styles.label}>工号</Text>
                 <TextInput
                     style={styles.input}
                     onChangeText={(text) => this.setState({username:text})}
