@@ -25,8 +25,8 @@ var DrawerMenu = React.createClass({
             avatar: Constants.URL_PREFIX + '/img/user.jpg',
             name: '',
             dataSource: dataSource.cloneWithRows([
-                {title: '微博', icon: require('image!ic_event'), selected: this.props.selected == '微博'},
                 {title: '课程', icon: require('image!ic_lesson'), selected: this.props.selected == '课程'},
+                {title: '微博', icon: require('image!ic_event'), selected: this.props.selected == '微博'},
                 {title: '作业', icon: require('image!ic_homework'), selected: this.props.selected == '作业'},
                 {title: '私信', icon: require('image!ic_message'), selected: this.props.selected == '私信'}
             ])
