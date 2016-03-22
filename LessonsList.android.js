@@ -8,7 +8,8 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
-    ToastAndroid
+    ToastAndroid,
+    AsyncStorage
 } = React;
 
 var Icon = require('react-native-vector-icons/FontAwesome');
@@ -34,9 +35,18 @@ var EventsList = React.createClass({
             return response.json()
         }).then(function (json) {
             if (json.error == 0) {
+                var lessons = json.lessons;
                 self.setState({
-                    dataSource: self.state.dataSource.cloneWithRows(json.lessons)
+                    dataSource: self.state.dataSource.cloneWithRows(lessons)
                 });
+                AsyncStorage.setItem('@Lessons', JSON.stringify(
+                    lessons.map(function (lesson) {
+                        return {
+                            _id: lesson._id,
+                            name: lesson.name
+                        };
+                    }))
+                );
             } else {
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }
@@ -102,7 +112,7 @@ var EventsList = React.createClass({
         return (
             <View style={styles.lessonView}>
                 <View style={styles.lessonHeader}>
-                    <Icon name="book" size={32} color="#287E2C" style={styles.lessonHeaderIcon}/>
+                    <Icon name="book" size={32} color="#666" style={styles.lessonHeaderIcon}/>
                     <View style={styles.lessonHeaderText}>
                         <Text
                             style={styles.lessonTitle}>
@@ -120,20 +130,23 @@ var EventsList = React.createClass({
                 <View style={styles.actions}>
                     <TouchableNativeFeedback
                         onPress={()=>this.rollCall(lesson)}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>{'课堂点名'}</Text>
+                        <View style={styles.buttonCall}>
+                            <Icon name="bell" size={16} color="#E56E2E" style={styles.buttonCallIcon}/>
+                            <Text style={styles.buttonCallText}>{'课堂点名'}</Text>
                         </View>
                     </TouchableNativeFeedback>
                     <TouchableNativeFeedback
                         onPress={()=>this.viewStudents(lesson)}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>{'学生列表'}</Text>
+                        <View style={styles.buttonStudents}>
+                            <Icon name="group" size={16} color="#139A86" style={styles.buttonStudentsIcon}/>
+                            <Text style={styles.buttonStudentsText}>{'学生列表'}</Text>
                         </View>
                     </TouchableNativeFeedback>
                     <TouchableNativeFeedback
                         onPress={()=>this.viewResources(lesson)}>
-                        <View style={styles.button}>
-                            <Text style={styles.buttonText}>{'课程资源'}</Text>
+                        <View style={styles.buttonResources}>
+                            <Icon name="folder" size={16} color="#1884BF" style={styles.buttonResourcesIcon}/>
+                            <Text style={styles.buttonResourcesText}>{'课程资源'}</Text>
                         </View>
                     </TouchableNativeFeedback>
                 </View>
@@ -195,11 +208,11 @@ var styles = StyleSheet.create({
     },
     planRow: {
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
         marginTop: 4
     },
     planIcon: {
-        marginRight: 16
+        marginRight: 12
     },
     period: {
         fontSize: 15
@@ -216,16 +229,58 @@ var styles = StyleSheet.create({
         marginTop: 12,
         paddingHorizontal: 16
     },
-    button: {
-        marginLeft: 16,
+    buttonCall: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
         padding: 6,
-        borderColor: '#388E3C',
+        borderColor: '#E56E2E',
         borderWidth: 1,
         borderRadius: 4
     },
-    buttonText: {
+    buttonCallIcon: {
+        marginRight: 4
+    },
+    buttonCallText: {
         fontSize: 16,
-        color: '#388E3C'
+        color: '#E56E2E'
+    },
+    buttonStudents: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 16,
+        padding: 6,
+        borderColor: '#139A86',
+        borderWidth: 1,
+        borderRadius: 4
+    },
+    buttonStudentsIcon: {
+        marginRight: 4
+    },
+    buttonStudentsText: {
+        fontSize: 16,
+        color: '#139A86'
+    },
+    buttonResources: {
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginLeft: 16,
+        padding: 6,
+        borderColor: '#1884BF',
+        borderWidth: 1,
+        borderRadius: 4
+    },
+    buttonResourcesIcon: {
+        marginRight: 4
+    },
+    buttonResourcesText: {
+        fontSize: 16,
+        color: '#1884BF'
     }
 });
 

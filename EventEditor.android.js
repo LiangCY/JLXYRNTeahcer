@@ -113,7 +113,7 @@ var styles = StyleSheet.create({
         padding: 12
     },
     contentView: {
-        height: 240,
+        height: 160,
         marginTop: 8,
         marginBottom: 16,
         padding: 12,
