@@ -11,7 +11,8 @@ var {
     View,
     TouchableNativeFeedback,
     ToastAndroid,
-    } = React;
+    ProgressBarAndroid,
+} = React;
 
 var Constants = require('./Constants');
 
@@ -21,6 +22,7 @@ var StudentsList = React.createClass({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
+            loading: true,
             dataSource: dataSource
         };
     },
@@ -34,6 +36,9 @@ var StudentsList = React.createClass({
         }).then(function (response) {
             return response.json()
         }).then(function (json) {
+            self.setState({
+                loading: false
+            });
             if (json.error == 0) {
                 self.setState({
                     dataSource: self.state.dataSource.cloneWithRows(json.students)
@@ -42,6 +47,9 @@ var StudentsList = React.createClass({
                 ToastAndroid.show(json.message, ToastAndroid.SHORT);
             }
         }).catch(function (e) {
+            self.setState({
+                loading: false
+            });
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
@@ -105,14 +113,27 @@ var StudentsList = React.createClass({
         );
     },
     render() {
+        var toolbar = (
+            <ToolbarAndroid
+                navIcon={require('image!ic_back_white')}
+                title={'学生列表 '+this.props.lesson.name}
+                titleColor="white"
+                style={styles.toolbar}
+                onIconClicked={() => this.props.navigator.pop()}/>
+        );
+        if (this.state.loading) {
+            return (
+                <View style={styles.container}>
+                    {toolbar}
+                    <View style={styles.progressView}>
+                        <ProgressBarAndroid styleAttr="Large"/>
+                    </View>
+                </View>
+            );
+        }
         return (
             <View style={styles.container}>
-                <ToolbarAndroid
-                    navIcon={require('image!ic_back_white')}
-                    title={'学生列表 '+this.props.lesson.name}
-                    titleColor="white"
-                    style={styles.toolbar}
-                    onIconClicked={() => this.props.navigator.pop()}/>
+                {toolbar}
                 <ListView
                     dataSource={this.state.dataSource}
                     renderRow={this.renderRow}/>
@@ -128,6 +149,13 @@ var styles = StyleSheet.create({
     toolbar: {
         backgroundColor: '#4CAF50',
         height: 56
+    },
+    progressView: {
+        flex: 1,
+        justifyContent: 'center'
+    },
+    list: {
+        flex: 1
     },
     row: {
         flex: 1,
