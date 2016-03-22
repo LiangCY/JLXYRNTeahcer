@@ -274,7 +274,6 @@ var styles = StyleSheet.create({
     row: {
         flex: 1,
         flexDirection: 'row',
-        overflow: 'hidden',
         alignItems: 'center',
         backgroundColor: 'white',
         padding: 12,
