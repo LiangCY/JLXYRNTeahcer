@@ -8,8 +8,10 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
-    } = React;
+    ToastAndroid
+} = React;
 
+var Icon = require('react-native-vector-icons/FontAwesome');
 var Constants = require('./Constants');
 
 var EventsList = React.createClass({
@@ -91,6 +93,7 @@ var EventsList = React.createClass({
             var period = item.start + ' - ' + (item.start + item.period - 1) + '节';
             return (
                 <View style={styles.planRow} key={item._id}>
+                    <Icon name="clock-o" size={16} color="#666" style={styles.planIcon}/>
                     <Text style={styles.period}>{day + ' ' + period}</Text>
                     <Text style={styles.classroom}>{item.classroom}</Text>
                 </View>
@@ -99,14 +102,17 @@ var EventsList = React.createClass({
         return (
             <View style={styles.lessonView}>
                 <View style={styles.lessonHeader}>
-                    <Text
-                        style={styles.lessonTitle}>
-                        {(lesson.name)}
-                    </Text>
-                    <Text
-                        style={styles.lessonSubtitle}>
-                        {(lesson.term) + ' - ' + (lesson.term + 1) + ' 第' + lesson.half + '学期'}
-                    </Text>
+                    <Icon name="book" size={32} color="#287E2C" style={styles.lessonHeaderIcon}/>
+                    <View style={styles.lessonHeaderText}>
+                        <Text
+                            style={styles.lessonTitle}>
+                            {(lesson.name)}
+                        </Text>
+                        <Text
+                            style={styles.lessonSubtitle}>
+                            {(lesson.term) + ' - ' + (lesson.term + 1) + ' 第' + lesson.half + '学期'}
+                        </Text>
+                    </View>
                 </View>
                 <View style={styles.plans}>
                     {plans}
@@ -158,12 +164,19 @@ var styles = StyleSheet.create({
         backgroundColor: 'white'
     },
     lessonHeader: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 8,
         paddingHorizontal: 16,
         paddingBottom: 8,
         borderBottomColor: '#CCC',
         borderBottomWidth: 0.5
+    },
+    lessonHeaderIcon: {
+        marginRight: 16
+    },
+    lessonHeaderText: {
+        flexDirection: 'column'
     },
     lessonTitle: {
         fontSize: 17,
@@ -182,7 +195,11 @@ var styles = StyleSheet.create({
     },
     planRow: {
         flexDirection: 'row',
+        alignItems:'center',
         marginTop: 4
+    },
+    planIcon: {
+        marginRight: 16
     },
     period: {
         fontSize: 15
