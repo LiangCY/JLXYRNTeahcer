@@ -5,35 +5,54 @@ var React = require('react-native');
 var {
     ListView,
     StyleSheet,
-    PullToRefreshViewAndroid,
     Text,
     View,
     TouchableNativeFeedback,
     ToastAndroid,
-    } = React;
+    AsyncStorage,
+} = React;
 
+var Icon = require('react-native-vector-icons/FontAwesome');
 var Constants = require('./Constants');
 
 var TasksList = React.createClass({
     getInitialState() {
-        var dataSource = new ListView.DataSource({
+        var taskDataSource = new ListView.DataSource({
+            rowHasChanged: (row1, row2) => row1 !== row2
+        });
+        var lessonDataSource = new ListView.DataSource({
             rowHasChanged: (row1, row2) => row1 !== row2
         });
         return {
             isRefreshing: false,
-            dataSource: dataSource
+            taskDataSource: taskDataSource,
+            lessonDataSource: lessonDataSource,
+            isSelecting: false,
+            selectedLesson: null
         };
     },
     componentDidMount: function () {
+        this.getLessons().done();
         this.fetchTasks();
     },
-    fetchTasks: function () {
+    async getLessons(){
+        try {
+            var value = await AsyncStorage.getItem('@Lessons');
+            var lessons = JSON.parse(value);
+            lessons.unshift({name: '全部课程', _id: null});
+            this.setState({
+                lessonDataSource: this.state.lessonDataSource.cloneWithRows(lessons)
+            });
+        } catch (error) {
+        }
+    },
+    fetchTasks: function (lesson) {
         if (this.state.isRefreshing) {
             return;
         }
         this.setState({isRefreshing: true});
         var self = this;
-        fetch(Constants.URL_TASKS, {
+        fetch(Constants.URL_TASKS + (lesson && lesson._id ? ('?lesson=' + lesson._id) : ''), {
             credentials: 'same-origin'
         }).then(function (response) {
             return response.json()
@@ -41,7 +60,7 @@ var TasksList = React.createClass({
             if (json.error == 0) {
                 self.setState({
                     isRefreshing: false,
-                    dataSource: self.state.dataSource.cloneWithRows(json.tasks)
+                    taskDataSource: self.state.taskDataSource.cloneWithRows(json.tasks)
                 });
             } else {
                 self.setState({
@@ -73,6 +92,7 @@ var TasksList = React.createClass({
             <View style={styles.row}>
                 <View style={styles.column}>
                     <View style={styles.header}>
+                        <Icon name="pencil" size={18} color="#666" style={styles.taskIcon}/>
                         <Text
                             numberOfLines={1}
                             style={styles.title}>
@@ -112,6 +132,26 @@ var TasksList = React.createClass({
             </View>
         );
     },
+    renderLessonRow: function (lesson) {
+        return (
+            <TouchableNativeFeedback
+                onPress={()=>{this.selectLesson(lesson)}}>
+                <View style={styles.lessonRow}>
+                    <Icon name="book" size={16} color="#666" style={styles.lessonIcon}/>
+                    <Text style={styles.lessonName}>
+                        {lesson.name}
+                    </Text>
+                </View>
+            </TouchableNativeFeedback>
+        );
+    },
+    selectLesson: function (lesson) {
+        this.setState({
+            selectedLesson: lesson,
+            isSelecting: false
+        });
+        this.fetchTasks(lesson);
+    },
     selectTask: function (task) {
         this.props.navigator.push({
             name: 'task',
@@ -119,17 +159,32 @@ var TasksList = React.createClass({
         });
     },
     render() {
+        if (this.state.isSelecting) {
+            return (
+                <ListView
+                    dataSource={this.state.lessonDataSource}
+                    renderRow={this.renderLessonRow}
+                />
+            );
+        }
         return (
-            <PullToRefreshViewAndroid
-                style={styles.layout}
-                refreshing={this.state.isRefreshing}
-                onRefresh={this.fetchTasks}
-                colors={['#4CAF50']}>
+            <View style={styles.layout}>
+                <TouchableNativeFeedback
+                    background={TouchableNativeFeedback.SelectableBackground()}
+                    onPress={()=>{this.setState({isSelecting:true})}}>
+                    <View style={styles.selectButton}>
+                        <Icon name="book" size={16} color="#666" style={styles.lessonIcon}/>
+                        <Text style={styles.selectButtonText}>
+                            {this.state.selectedLesson && this.state.selectedLesson.name || '全部课程'}
+                        </Text>
+                        <Icon name="angle-right" size={18} color="#666" style={styles.taskIcon}/>
+                    </View>
+                </TouchableNativeFeedback>
                 <ListView
                     style={styles.list}
-                    dataSource={this.state.dataSource}
+                    dataSource={this.state.taskDataSource}
                     renderRow={this.renderRow}/>
-            </PullToRefreshViewAndroid>
+            </View>
         );
     }
 });
@@ -162,6 +217,9 @@ var styles = StyleSheet.create({
         marginBottom: 8,
         borderBottomColor: '#CCC',
         borderBottomWidth: 0.5
+    },
+    taskIcon: {
+        marginRight: 12
     },
     title: {
         flex: 1,
@@ -204,6 +262,35 @@ var styles = StyleSheet.create({
     buttonText: {
         fontSize: 15,
         color: '#388E3C'
+    },
+    selectButton: {
+        flexDirection: 'row',
+        backgroundColor: '#FFF',
+        alignItems: 'center',
+        borderBottomWidth: 1.5,
+        borderBottomColor: '#286E2C',
+        paddingHorizontal: 12,
+        paddingVertical: 16
+    },
+    selectButtonText: {
+        flex: 1,
+        fontSize: 16
+    },
+    selectButtonIcon: {},
+    lessonRow: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 12,
+        paddingVertical: 16,
+        borderBottomWidth: 0.5,
+        borderBottomColor: '#CCC'
+    },
+    lessonIcon: {
+        marginRight: 8
+    },
+    lessonName: {
+        flex: 1,
+        fontSize: 16
     }
 });
 
