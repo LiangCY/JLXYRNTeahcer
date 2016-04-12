@@ -7,7 +7,7 @@ var {
     Image,
     Navigator,
     BackAndroid,
-    } = React;
+} = React;
 
 var TimerMixin = require('react-timer-mixin');
 
@@ -22,6 +22,7 @@ var StudentScreen = require('./StudentScreen');
 var ResourcesList = require('./ResourcesList');
 var ResourceScreen = require('./ResourceScreen');
 var TaskScreen = require('./TaskScreen');
+var TaskEditor = require('./TaskEditor');
 var HomeworkList = require('./HomeworkList');
 var HomeworkScreen = require('./HomeworkScreen');
 var MessageScreen = require('./MessageScreen');
@@ -93,6 +94,10 @@ var RNAppTeacher = React.createClass({
         } else if (route.name === 'task') {
             return (
                 <TaskScreen taskId={route.taskId} navigator={navigationOperations}/>
+            );
+        } else if (route.name === 'add_task') {
+            return (
+                <TaskEditor lesson={route.lesson} navigator={navigationOperations}/>
             );
         } else if (route.name === 'homework_list') {
             return (
