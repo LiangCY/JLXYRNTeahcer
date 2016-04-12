@@ -7,11 +7,13 @@ var {
     StyleSheet,
     Text,
     View,
+    Image,
     TouchableNativeFeedback,
     ToastAndroid,
     AsyncStorage,
 } = React;
 
+import ActionButton from 'react-native-action-button';
 var Icon = require('react-native-vector-icons/FontAwesome');
 var Constants = require('./Constants');
 
@@ -28,12 +30,27 @@ var TasksList = React.createClass({
             taskDataSource: taskDataSource,
             lessonDataSource: lessonDataSource,
             isSelecting: false,
-            selectedLesson: null
+            selectedLesson: {name: '全部课程', _id: null}
         };
+    },
+    componentWillMount: function () {
+        var navigator = this.props.navigator;
+        var self = this;
+        var didFocusCallback = function (event) {
+            if (event.data.route.name == 'main') {
+                self.fetchTasks(self.state.selectedLesson);
+            }
+        };
+        this._listeners = [
+            navigator.navigationContext.addListener('didfocus', didFocusCallback)
+        ];
     },
     componentDidMount: function () {
         this.getLessons().done();
         this.fetchTasks();
+    },
+    componentWillUnmount: function () {
+        this._listeners && this._listeners.forEach(listener => listener.remove());
     },
     async getLessons(){
         try {
@@ -92,10 +109,12 @@ var TasksList = React.createClass({
             <View style={styles.row}>
                 <View style={styles.column}>
                     <View style={styles.header}>
-                        <Icon name="pencil" size={18} color="#666" style={styles.taskIcon}/>
+                        <Icon name="pencil" size={18}
+                              color={task.askForRedo?'#FF9124':task.unread?'#FF4D4D':'#286E2C'}
+                              style={styles.taskIcon}/>
                         <Text
                             numberOfLines={1}
-                            style={styles.title}>
+                            style={task.askForRedo?styles.titleOrange:task.unread?styles.titleRed:styles.title}>
                             {task.title}
                         </Text>
                         <Text
@@ -158,6 +177,12 @@ var TasksList = React.createClass({
             taskId: task.taskId
         });
     },
+    addTask: function () {
+        this.props.navigator.push({
+            name: 'add_task',
+            lesson: this.state.selectedLesson
+        });
+    },
     render() {
         if (this.state.isSelecting) {
             return (
@@ -165,6 +190,31 @@ var TasksList = React.createClass({
                     dataSource={this.state.lessonDataSource}
                     renderRow={this.renderLessonRow}
                 />
+            );
+        }
+        if (this.state.selectedLesson._id) {
+            return (
+                <View style={styles.layout}>
+                    <TouchableNativeFeedback
+                        background={TouchableNativeFeedback.SelectableBackground()}
+                        onPress={()=>{this.setState({isSelecting:true})}}>
+                        <View style={styles.selectButton}>
+                            <Icon name="book" size={16} color="#666" style={styles.lessonIcon}/>
+                            <Text style={styles.selectButtonText}>
+                                {this.state.selectedLesson && this.state.selectedLesson.name || '全部课程'}
+                            </Text>
+                            <Icon name="angle-right" size={18} color="#666" style={styles.taskIcon}/>
+                        </View>
+                    </TouchableNativeFeedback>
+                    <ListView
+                        style={styles.list}
+                        dataSource={this.state.taskDataSource}
+                        renderRow={this.renderRow}/>
+                    <ActionButton
+                        onPress={this.addTask}
+                        icon={<Image style={{height:24,width:24}} source={require('image!ic_add')}/>}
+                        buttonColor="rgba(76,175,80,1)"/>
+                </View>
             );
         }
         return (
@@ -224,7 +274,17 @@ var styles = StyleSheet.create({
     title: {
         flex: 1,
         fontSize: 17,
-        color: '#222'
+        color: '#286E2C'
+    },
+    titleOrange: {
+        flex: 1,
+        fontSize: 17,
+        color: '#FF9124'
+    },
+    titleRed: {
+        flex: 1,
+        fontSize: 17,
+        color: '#FF4D4D'
     },
     time: {
         fontSize: 14
