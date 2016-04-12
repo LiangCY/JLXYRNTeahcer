@@ -216,6 +216,7 @@ var styles = StyleSheet.create({
     dateButton: {
         padding: 12,
         marginTop: 8,
+        marginBottom: 24,
         borderColor: '#CCC',
         borderWidth: 1,
         backgroundColor: 'white'
