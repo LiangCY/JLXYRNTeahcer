@@ -12,7 +12,7 @@ var {
     TouchableNativeFeedback,
     ToastAndroid,
     PullToRefreshViewAndroid,
-    } = React;
+} = React;
 
 var Constants = require('./Constants');
 
@@ -86,8 +86,13 @@ var HomeworkList = React.createClass({
             var status = '未批改';
             var statusStyle = styles.statusNotGrade
         } else if (homework.status == 2) {
-            status = homework.grade + (homework.remark ? ' (' + homework.remark + ')' : '');
-            statusStyle = parseInt(status) >= 60 ? styles.statusPass : styles.statusNotPass;
+            if (homework.doubt) {
+                status = '质疑';
+                statusStyle = styles.statusAskForRedo
+            } else {
+                status = homework.grade + (homework.remark ? ' (' + homework.remark + ')' : '');
+                statusStyle = parseInt(status) >= 60 ? styles.statusPass : styles.statusNotPass;
+            }
         } else if (homework.status == 3) {
             status = '申请重交';
             statusStyle = styles.statusAskForRedo

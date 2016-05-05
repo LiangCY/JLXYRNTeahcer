@@ -13,7 +13,7 @@ var {
     IntentAndroid,
     TouchableNativeFeedback,
     TextInput,
-    } = React;
+} = React;
 
 var HTMLView = require('react-native-htmlview');
 
@@ -207,7 +207,19 @@ var TaskScreen = React.createClass({
         } else if (homework.status == 2) {
             status = homework.grade + (homework.remark ? ' (' + homework.remark + ')' : '');
             statusStyle = parseInt(status) >= 60 ? styles.statusPass : styles.statusNotPass;
-            gradeView = <View/>;
+            if (homework.doubt) {
+                gradeView = (
+                    <View style={styles.gradeView}>
+                        <Text
+                            style={styles.doubtContent}>
+                            {'质疑 (' + (homework.doubtReason || '未填写原因') + ')'}
+                        </Text>
+                    </View>
+                );
+
+            } else {
+                gradeView = <View/>;
+            }
         } else if (homework.status == 3) {
             status = '申请重交 (' + homework.redoReason + ')';
             statusStyle = styles.statusAskForRedo;
@@ -403,6 +415,10 @@ var styles = StyleSheet.create({
         padding: 6,
         backgroundColor: '#FF8C1A',
         borderRadius: 4
+    },
+    doubtContent: {
+        fontSize: 15,
+        color: '#FF8C1A'
     }
 });
 

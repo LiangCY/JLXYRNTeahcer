@@ -110,11 +110,11 @@ var TasksList = React.createClass({
                 <View style={styles.column}>
                     <View style={styles.header}>
                         <Icon name="pencil" size={18}
-                              color={task.askForRedo?'#FF9124':task.unread?'#FF4D4D':'#286E2C'}
+                              color={(task.askForRedo||task.doubt)?'#FF9124':task.unread?'#FF4D4D':'#286E2C'}
                               style={styles.taskIcon}/>
                         <Text
                             numberOfLines={1}
-                            style={task.askForRedo?styles.titleOrange:task.unread?styles.titleRed:styles.title}>
+                            style={(task.askForRedo||task.doubt)?styles.titleOrange:task.unread?styles.titleRed:styles.title}>
                             {task.title}
                         </Text>
                         <Text
