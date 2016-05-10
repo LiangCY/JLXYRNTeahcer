@@ -19,7 +19,7 @@ module.exports = {
     URL_STUDENT: URL_BASE + '/student/',
     URL_TASKS: URL_BASE + '/tasks',
     URL_TASK: URL_BASE + '/task/',
-    URL_TASK_ADD: URL_BASE + '/task/add',
+    URL_TASK_EDIT: URL_BASE + '/task/edit',
     URL_HOMEWORK_LIST: URL_BASE + '/homeworks/',
     URL_HOMEWORK: URL_BASE + '/homework/',
     URL_APPROVE_REDO: URL_BASE + '/approve_redo/',
