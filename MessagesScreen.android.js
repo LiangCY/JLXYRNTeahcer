@@ -25,15 +25,12 @@ var MessagesScreen = React.createClass({
     componentWillMount: function () {
         var navigator = this.props.navigator;
         var self = this;
-        var willFocusCallback = function (event) {
-        };
         var didFocusCallback = function (event) {
             if (event.data.route.name == 'main') {
                 self.fetchMessages();
             }
         };
         this._listeners = [
-            navigator.navigationContext.addListener('willfocus', willFocusCallback),
             navigator.navigationContext.addListener('didfocus', didFocusCallback)
         ];
     },
