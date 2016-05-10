@@ -14,10 +14,20 @@ var {
     DatePickerAndroid,
 } = React;
 
+var HTMLView = require('react-native-htmlview');
 var Constants = require('./Constants');
 
 var TaskEditor = React.createClass({
     getInitialState() {
+        var task = this.props.task;
+        if (task) {
+            return {
+                title: task.title,
+                content: task.content,
+                deadline: task.deadline,
+                isAdding: false
+            };
+        }
         return {
             title: '',
             content: '',
@@ -33,14 +43,16 @@ var TaskEditor = React.createClass({
             this.setState({
                 isAdding: true
             });
+            var task = this.props.task;
             var self = this;
-            fetch(Constants.URL_TASK_ADD, {
+            fetch(Constants.URL_TASK_EDIT, {
                 method: 'post',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
+                    taskId: task && task._id,
                     lesson: this.props.lesson._id,
                     title: this.state.title,
                     description: this.state.content,
@@ -54,7 +66,6 @@ var TaskEditor = React.createClass({
                     isAdding: false
                 });
                 if (json.error == 0) {
-                    ToastAndroid.show('作业已添加', ToastAndroid.SHORT);
                     self.props.navigator.pop();
                 } else {
                     ToastAndroid.show(json.message, ToastAndroid.SHORT);
@@ -65,7 +76,6 @@ var TaskEditor = React.createClass({
                 });
                 ToastAndroid.show(e.message, ToastAndroid.SHORT);
             });
-
         }
     },
     async showPicker() {
@@ -102,12 +112,12 @@ var TaskEditor = React.createClass({
             );
         } else {
             var toolbarActions = [
-                {title: '添加', icon: require('image!ic_send_white'), show: 'always'}
+                {title: '提交', icon: require('image!ic_send_white'), show: 'always'}
             ];
             toolbar = (
                 <ToolbarAndroid
                     navIcon={require('image!ic_back_white')}
-                    title='添加作业'
+                    title={this.props.task?'编辑作业':'添加作业'}
                     titleColor="white"
                     style={styles.toolbar}
                     onIconClicked={() => this.props.navigator.pop()}
@@ -116,6 +126,29 @@ var TaskEditor = React.createClass({
             );
         }
         var lesson = this.props.lesson;
+        var task = this.props.task;
+        if (!task) {
+            var content = (
+                <TextInput
+                    placeholder="请输入作业具体要求"
+                    style={styles.contentInput}
+                    multiline={true}
+                    textAlign='start'
+                    textAlignVertical='top'
+                    underlineColorAndroid="transparent"
+                    onChangeText={(text) => this.setState({content:text})}
+                    value={this.state.content}/>
+            );
+        } else {
+            content = (
+                <ScrollView style={styles.htmlView}>
+                    <HTMLView
+                        style={styles.htmlContent}
+                        onLinkPress={(url) => {}}
+                        value={task.content||'无具体要求'}/>
+                </ScrollView>
+            );
+        }
         return (
             <View style={styles.container}>
                 {toolbar}
@@ -133,19 +166,12 @@ var TaskEditor = React.createClass({
                             style={styles.titleInput}
                             underlineColorAndroid="transparent"
                             onChangeText={(text) => this.setState({title:text})}
-                            value={this.state.title}/>
+                            value={this.state.title}
+                            editable={!task}/>
                     </View>
                     <Text style={styles.label}>具体要求</Text>
                     <View style={styles.contentView}>
-                        <TextInput
-                            placeholder="请输入作业具体要求"
-                            style={styles.contentInput}
-                            multiline={true}
-                            textAlign='start'
-                            textAlignVertical='top'
-                            underlineColorAndroid="transparent"
-                            onChangeText={(text) => this.setState({content:text})}
-                            value={this.state.content}/>
+                        {content}
                     </View>
                     <Text style={styles.label}>截止时间</Text>
                     <TouchableNativeFeedback
@@ -203,14 +229,13 @@ var styles = StyleSheet.create({
     contentView: {
         height: 240,
         marginTop: 8,
-        padding: 12,
         borderColor: '#CCC',
         borderWidth: 1,
         backgroundColor: 'white'
     },
     contentInput: {
         flex: 1,
-        padding: 0,
+        padding: 12,
         fontSize: 16
     },
     dateButton: {
@@ -220,6 +245,12 @@ var styles = StyleSheet.create({
         borderColor: '#CCC',
         borderWidth: 1,
         backgroundColor: 'white'
+    },
+    htmlView: {
+        paddingHorizontal: 12,
+        marginVertical: 12
+    },
+    htmlContent: {
     }
 });
 

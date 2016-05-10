@@ -97,7 +97,7 @@ var RNAppTeacher = React.createClass({
             );
         } else if (route.name === 'add_task') {
             return (
-                <TaskEditor lesson={route.lesson} navigator={navigationOperations}/>
+                <TaskEditor lesson={route.lesson} task={route.task} navigator={navigationOperations}/>
             );
         } else if (route.name === 'homework_list') {
             return (

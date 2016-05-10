@@ -11,10 +11,11 @@ var {
     ScrollView,
     ToastAndroid,
     IntentAndroid,
-    } = React;
+    TouchableNativeFeedback
+} = React;
 
 var HTMLView = require('react-native-htmlview');
-
+var Icon = require('react-native-vector-icons/FontAwesome');
 var Constants = require('./Constants');
 var MessagesList = require('./MessagesList');
 
@@ -24,8 +25,20 @@ var TaskScreen = React.createClass({
             task: null
         };
     },
-    componentDidMount: function () {
-        this.fetchTask(this.props.taskId);
+    componentWillMount: function () {
+        var navigator = this.props.navigator;
+        var self = this;
+        var didFocusCallback = function (event) {
+            if (event.data.route.name == 'task') {
+                self.fetchTask(self.props.taskId);
+            }
+        };
+        this._listeners = [
+            navigator.navigationContext.addListener('didfocus', didFocusCallback)
+        ];
+    },
+    componentWillUnmount: function () {
+        this._listeners && this._listeners.forEach(listener => listener.remove());
     },
     fetchTask: function (taskId) {
         var self = this;
@@ -43,6 +56,14 @@ var TaskScreen = React.createClass({
             }
         }).catch(function (e) {
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
+        });
+    },
+    editTask: function () {
+        var task = this.state.task;
+        this.props.navigator.push({
+            name: 'add_task',
+            lesson: {_id: task.lessonId, name: task.lesson},
+            task: task
         });
     },
     render: function () {
@@ -105,6 +126,14 @@ var TaskScreen = React.createClass({
                                 value={task.content||'无具体要求'}/>
                         </View>
                     </View>
+                    <TouchableNativeFeedback onPress={this.editTask}>
+                        <View style={styles.button}>
+                            <Icon name="edit" size={20} color="#2C9F40" style={styles.buttonCallIcon}/>
+                            <Text style={styles.buttonText}>
+                                {'编辑'}
+                            </Text>
+                        </View>
+                    </TouchableNativeFeedback>
                 </ScrollView>
             </View>
         );
@@ -175,8 +204,22 @@ var styles = StyleSheet.create({
         fontSize: 17,
         color: '#555',
         marginBottom: 8
+    },
+    button: {
+        flexDirection: 'row',
+        marginVertical: 24,
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: 48,
+        borderWidth: 1,
+        borderColor: '#2C9F40',
+        borderRadius: 8
+    },
+    buttonText: {
+        marginLeft: 12,
+        color: '#2C9F40',
+        fontSize: 18
     }
-
 });
 
 module.exports = TaskScreen;
