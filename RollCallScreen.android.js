@@ -61,6 +61,12 @@ var RollCallScreen = React.createClass({
             ToastAndroid.show(e.message, ToastAndroid.SHORT);
         });
     },
+    selectStudent: function (student) {
+        this.props.navigator.push({
+            name: 'student',
+            studentId: student._id
+        });
+    },
     selectAttend: function (student) {
         var students = this.state.students.slice();
         var index = students.map((student)=>student._id).indexOf(student._id);
@@ -160,39 +166,43 @@ var RollCallScreen = React.createClass({
             buttonTextStyleLeave = styles.buttonTextLeaveActive;
         }
         return (
-            <View style={styles.row}>
-                <View style={styles.column}>
-                    <Text
-                        style={styles.name}>
-                        {(student.name)}
-                    </Text>
-                    <Text
-                        style={styles.number}>
-                        {student._id}
-                    </Text>
+            <TouchableNativeFeedback
+                onPress={()=>this.selectStudent(student)}
+                background={TouchableNativeFeedback.SelectableBackground()}>
+                <View style={styles.row}>
+                    <View style={styles.column}>
+                        <Text
+                            style={styles.name}>
+                            {(student.name)}
+                        </Text>
+                        <Text
+                            style={styles.number}>
+                            {student._id}
+                        </Text>
+                    </View>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.selectAttend(student)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View style={buttonStyleAttend}>
+                            <Text style={buttonTextStyleAttend}>{'出勤'}</Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.selectAbsent(student)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View style={buttonStyleAbsent}>
+                            <Text style={buttonTextStyleAbsent}>{'缺勤'}</Text>
+                        </View>
+                    </TouchableNativeFeedback>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.selectLeave(student)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View style={buttonStyleLeave}>
+                            <Text style={buttonTextStyleLeave}>{'请假'}</Text>
+                        </View>
+                    </TouchableNativeFeedback>
                 </View>
-                <TouchableNativeFeedback
-                    onPress={()=>this.selectAttend(student)}
-                    background={TouchableNativeFeedback.SelectableBackground()}>
-                    <View style={buttonStyleAttend}>
-                        <Text style={buttonTextStyleAttend}>{'出勤'}</Text>
-                    </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                    onPress={()=>this.selectAbsent(student)}
-                    background={TouchableNativeFeedback.SelectableBackground()}>
-                    <View style={buttonStyleAbsent}>
-                        <Text style={buttonTextStyleAbsent}>{'缺勤'}</Text>
-                    </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
-                    onPress={()=>this.selectLeave(student)}
-                    background={TouchableNativeFeedback.SelectableBackground()}>
-                    <View style={buttonStyleLeave}>
-                        <Text style={buttonTextStyleLeave}>{'请假'}</Text>
-                    </View>
-                </TouchableNativeFeedback>
-            </View>
+            </TouchableNativeFeedback>
         );
     },
     renderFooter: function () {
