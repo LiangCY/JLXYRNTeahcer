@@ -81,6 +81,12 @@ var HomeworkList = React.createClass({
             homeworkId: homework._id
         });
     },
+    viewStudent: function (student) {
+        this.props.navigator.push({
+            name: 'student',
+            studentId: student._id
+        });
+    },
     renderRow: function (homework) {
         if (homework.status == 1) {
             var status = '未批改';
@@ -102,9 +108,14 @@ var HomeworkList = React.createClass({
                 onPress={()=>this.viewHomework(homework)}
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
-                    <Image
-                        style={styles.avatar}
-                        source={{uri:Constants.URL_PREFIX_AVATAR+homework.student._id}}/>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.viewStudent(homework.student)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View>
+                            <Image style={styles.avatar}
+                                   source={{uri:Constants.URL_PREFIX_AVATAR+homework.student._id}}/>
+                        </View>
+                    </TouchableNativeFeedback>
                     <View style={styles.column}>
                         <View style={styles.studentRow}>
                             <Text
@@ -174,12 +185,12 @@ var styles = StyleSheet.create({
     avatar: {
         height: 48,
         width: 48,
-        marginRight: 16,
         borderRadius: 24
     },
     column: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginLeft: 16
     },
     studentRow: {
         flexDirection: 'row',

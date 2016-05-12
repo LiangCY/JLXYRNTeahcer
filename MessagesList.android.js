@@ -10,7 +10,7 @@ var {
     Text,
     View,
     TouchableNativeFeedback,
-    } = React;
+} = React;
 
 var Constants = require('./Constants');
 
@@ -34,9 +34,15 @@ var MessagesList = React.createClass({
                 onPress={()=>this.selectMessage(message)}
                 background={TouchableNativeFeedback.SelectableBackground()}>
                 <View style={styles.row}>
-                    <Image
-                        style={styles.avatar}
-                        source={{uri:Constants.URL_PREFIX+'/avatar/'+message.userId}}/>
+                    <TouchableNativeFeedback
+                        onPress={()=>this.viewStudent(message.userId)}
+                        background={TouchableNativeFeedback.SelectableBackground()}>
+                        <View>
+                            <Image
+                                style={styles.avatar}
+                                source={{uri:Constants.URL_PREFIX+'/avatar/'+message.userId}}/>
+                        </View>
+                    </TouchableNativeFeedback>
                     <View style={styles.column}>
                         <Text
                             numberOfLines={1}
@@ -65,6 +71,12 @@ var MessagesList = React.createClass({
         this.props.navigator.push({
             name: 'message',
             messageId: message._id
+        });
+    },
+    viewStudent: function (studentId) {
+        this.props.navigator.push({
+            name: 'student',
+            studentId: studentId
         });
     },
     render: function () {
@@ -97,12 +109,12 @@ var styles = StyleSheet.create({
     avatar: {
         height: 48,
         width: 48,
-        marginRight: 12,
         borderRadius: 24
     },
     column: {
         flex: 1,
-        flexDirection: 'column'
+        flexDirection: 'column',
+        marginLeft: 12
     },
     extra: {
         marginTop: 4,
